@@ -1,0 +1,227 @@
+---
+title: "Meetup about Data Visualisation with Sean Walsh"
+author: "Douglas Zickuhr"
+date: "25/08/2018"
+output: html_document
+
+---
+
+# Loading libraries
+```{r libraries}
+library(tidyverse)
+library(readxl)
+library(xts)
+library(dygraphs)
+library(ggcorrplot)
+library(scales)
+```
+
+
+# Citation
+```{r citation}
+citation("tidyverse")
+citation("readxl")
+citation("xts")
+citation("dygraphs")
+```
+
+
+# Reading Excel spreadsheet.
+```{r}
+churn <- read_excel("data/test_dfXL.xlsx", sheet = 1)
+timeseries <-read_excel("data/test_dfXL.xlsx", sheet = 2)
+```
+
+# Checking tibbles
+## Main df
+```{r df}
+head(churn)
+glimpse(churn)
+```
+
+## Dygraphs tibble
+```{r dygraphs}
+head(timeseries)
+glimpse(timeseries)
+```
+
+
+```{r diamonds}
+data("diamonds")
+head(diamonds)
+```
+
+```{r diamonds histagram}
+ggplot(diamonds, aes(x=price)) + 
+  geom_histogram()
+```
+
+```{r r base histogram}
+hist(diamonds$price)
+```
+
+```{r histogram with log}
+ggplot(diamonds) + 
+  geom_histogram(aes(x=log(price)))
+
+```
+
+```{r histogram price/caret}
+ggplot(diamonds, aes(x = price/carat)) + 
+  geom_histogram()
+
+
+```
+
+
+```{r density plot}
+ggplot(diamonds,
+       aes(x=price)) + 
+  geom_density()
+
+```
+
+
+```{r}
+plot(density(diamonds$price))
+```
+
+
+```{r churn lifetime plot}
+plot(churn$LIFETIME)
+```
+
+```{r anomalies}
+plot(diamonds$depth,
+     col = if_else(diamonds$depth > 75 | diamonds$depth < 50, "red", "black"),
+     main = "Outliers",
+     ylab = "Depth (%)")
+
+```
+
+
+
+```{r diamonds plot}
+ggplot(diamonds, aes(x=carat,y=price)) + 
+  geom_point(aes(colour=cut))
+```
+
+```{r jitter + smooth}
+ggplot(diamonds, aes(x=carat,y=price)) + 
+  geom_jitter(aes(colour=cut), alpha = 0.5)
+
+```
+
+
+
+```{r diamonds boxplot}
+ggplot(diamonds,
+       aes(cut,price)) +
+  geom_boxplot() + 
+  theme_bw()
+```
+
+```{r boxsplot of carat by cut}
+ggplot(diamonds,
+       aes(cut,carat)) + 
+  geom_boxplot()
+```
+
+```{r diamonds boxplot no outliers}
+ggplot(diamonds,
+       aes(cut,price)) + 
+  geom_boxplot(outlier.shape = NA,
+               width = 0.25) + 
+  scale_y_continuous(limits = c(0,15000)) + 
+  theme_bw()
+```
+
+```{r diamonds violin plot}
+ggplot(diamonds,
+       aes(cut,price)) +
+  geom_violin(fill = "blue") + 
+  coord_flip()
+```
+
+
+
+```{r bar plot by cut}
+diamonds %>%
+  group_by(cut) %>%
+  summarise(median_price = median(price,na.rm = TRUE)) %>%
+  ungroup() %>%
+  ggplot(aes(reorder(cut,median_price),median_price)) +
+  geom_col(width = 0.75,
+           fill = "lavender",
+           colour = "black") + 
+  geom_hline(yintercept = 0) + 
+  labs(x = "Cut",
+        y = "Median Price") + 
+  coord_flip()
+```
+
+
+```{r churn geom_line}
+churn %>%
+  select(START_DATE,RATING) %>%
+  mutate(START_MONTH = as.yearmon(START_DATE)) %>%
+  mutate(START_MONTH = as.POSIXct(START_MONTH)) %>%
+  group_by(START_MONTH, RATING) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  ggplot(aes(x=START_MONTH,
+             y=total,
+             colour = RATING)) + 
+  geom_line()
+
+```
+
+```{r corrgram of diamonds}
+corrgram::corrgram(diamonds)
+```
+
+```{r diamonds scatterplot}
+ggplot(diamonds,
+       aes(x=carat,
+                 y=sqrt(price))) + 
+  geom_jitter(aes(colour = cut), alpha = 0.5) + 
+  labs(title = "Linear Relationship between Carat and Price",
+       subtitle = "Source: diamonds datasaet from the ggplot2 packate ",
+       x = "Carat",
+       y = "Squared Price") + 
+  scale_y_continuous(label = scales::dollar) + 
+  theme_minimal()
+```
+
+```{r diamonds scatterplot with facet_wrap}
+ggplot(diamonds,
+       aes(x=carat,
+           y=sqrt(price))) + 
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  labs(title = "Linear Relationship between Carat and Price",
+       subtitle = "Source: diamonds datasaet from the ggplot2 packate ",
+       x = "Carat",
+       y = "Squared Price") + 
+  facet_wrap(~cut, scales = "free_y") +
+  scale_y_continuous(label = scales::dollar) + 
+  theme_minimal()
+```
+
+# Dygraphs
+```{r}
+m.xts <- xts(lead(timeseries$Male), timeseries$Date)
+f.xts <- xts(lead(timeseries$Female), timeseries$Date)
+
+all <- cbind(m.xts,f.xts)
+
+dygraph(all)
+```
+
+```{r dygraph with range selector}
+dygraph(all) %>% 
+  dyRangeSelector()
+```
+
+
+
