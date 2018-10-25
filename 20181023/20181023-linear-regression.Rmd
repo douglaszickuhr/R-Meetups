@@ -1,0 +1,109 @@
+---
+title: 'Linear Regression'
+author: "Douglas Zickuhr"
+date: "23/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(caret)
+```
+
+
+# Linear Regressions using R
+
+## Plotting mtcars
+```{r}
+data(mtcars)
+mtcars %>%
+  ggplot(aes(x=disp,
+             y=mpg)) + 
+  geom_point()
+
+```
+
+## Correlation between disp and mpg
+```{r}
+cor(mtcars$disp,
+    mtcars$mpg)
+```
+
+## Plotting disp and sqrt(mpg)
+```{r}
+mtcars %>%
+  ggplot(aes(x=disp,
+             y=sqrt(mpg))) + 
+  geom_point()
+```
+
+
+## Correlation between disp and sqrt(mpg)
+```{r}
+cor(mtcars$disp,
+    sqrt(mtcars$mpg))
+```
+
+
+## Modelling
+```{r}
+model <- lm(disp~sqrt(mpg),
+            data = mtcars)
+summary(model)
+```
+
+
+## Plotting with prediction using ggplot
+```{r}
+mtcars %>%
+  ggplot(aes(x=disp,
+             y=sqrt(mpg))) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+## Plotting model
+```{r}
+plot(model)
+```
+
+## BoxCox Transformation
+```{r}
+mpg_bc <- BoxCoxTrans(sqrt(mtcars$mpg))
+```
+
+
+# Multiple Linear Regression
+```{r}
+mul_model <- lm(mpg ~ cyl + wt + disp,
+                data = mtcars)
+summary(mul_model)
+
+mul_model <- lm(mpg ~ cyl + wt,
+                data = mtcars)
+summary(mul_model)
+```
+
+
+## Train & Test dataset
+```{r}
+set.seed(42)
+mtcars_part <- createDataPartition(y = mtcars$mpg,
+                                   p = 0.7,
+                                   list = FALSE)
+mtcars_train <- mtcars[mtcars_part,]
+mtcars_test <- mtcars[-mtcars_part,]
+```
+
+
+## Prediction
+```{r}
+pred_model <- lm(mpg ~ cyl + wt,
+                 data = mtcars_train)
+mtcars_predictions <- predict(pred_model, mtcars_test)
+```
+
