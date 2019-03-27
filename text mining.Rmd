@@ -1,0 +1,80 @@
+---
+title: "Text Mining"
+author: "Douglas Zickuhr"
+date: "3/27/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Tidy data
+
+Using tidy data principles is a powerful way to make handling data easier and more effective, and this is no less true when it comes to dealing with text. As described by Hadley Wickham (Wickham 2014), tidy data has a specific structure:
+
+* Each variable is a column
+* Each observation is a row
+* Each type of observational unit is a table
+
+![](images/tidydata.png)
+
+It makes easier to use all the packages based on the tidyverse, like dplyr, tidyr, ggplot, etc.
+
+# Tidy text data
+
+An sample of Emily Dickinson's text
+
+```{r}
+text <- c("Because I could not stop for Death -",
+          "He kindly stopped for me -",
+          "The Carriage held but just Ourselves -",
+          "and Immortality")
+
+text
+```
+
+
+## Converting a sample text to tidy data
+
+
+## Word frequencies
+
+
+## Removing Stop words 
+
+
+# Sentiment Analysis
+![](images/sentiment_analysis.png)
+
+
+## Lexicons
+
+```{r}
+library(tidytext)
+sentiments
+
+```
+
+The three general-purpose lexicons are
+
+* AFINN from Finn Årup Nielsen,
+* bing from Bing Liu and collaborators, and
+* nrc from Saif Mohammad and Peter Turney.
+
+## Positive and Negative words
+
+
+
+## Wordclouds
+
+
+
+# TF-IDF 
+Term Frequency - Inverse Document Frequency
+
+Using TF-IDF it's possible to mensurate what words are more common in a chapter and less common in others chapters, for instance.
+
+
+## The bind-tf-idf function
+
