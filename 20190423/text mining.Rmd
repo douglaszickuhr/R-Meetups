@@ -26,7 +26,7 @@ Using tidy data principles is a powerful way to make handling data easier and mo
 * Each observation is a row
 * Each type of observational unit is a table
 
-![](images/tidydata.png)
+![](img/tidydata.png)
 
 
 # Tidy text data
@@ -141,7 +141,7 @@ Emma seems to be the longest book with 160k words whilst Northanger Abbey is the
 Now that the data is in one-word-per-row format, we can manipulate it with tidy tools like `dplyr`. Often in text analysis, we will want to remove stop words; stop words are words that are not useful for an analysis, typically extremely common words such as “the”, “of”, “to”, and so forth in English. We can remove stop words (kept in the tidytext dataset `stop_words`) with an `anti_join()`.
 
 The anti-join functions is an implementation of a filtering join, which drops all observations in `x` that have a match in `y`.
-![](images/join-anti.png)
+![](img/join-anti.png)
 
 ```{r jane austen filtering stop-words}
 jane_tidy_words <- jane_tidy %>% 
@@ -212,7 +212,7 @@ jane_tidy_words %>%
 
 
 # Sentiment Analysis
-![](images/sentiment_analysis.png)
+![](img/sentiment_analysis.png)
 
 
 ## Lexicons

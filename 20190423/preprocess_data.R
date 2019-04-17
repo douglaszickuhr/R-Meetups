@@ -12,4 +12,4 @@ original_books <- austen_books() %>%
                                                  ignore_case = TRUE)))) %>%
   ungroup()
 
-write_csv(original_books,"C:/Users/ST9DZ1/Documents/janeausten.csv")
+write_csv(original_books,"20190423/data/janeausten.csv")
