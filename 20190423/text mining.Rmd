@@ -16,9 +16,17 @@ knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 theme_set(theme_bw())
 ```
 
-# Introduction
+# Agenda
 
-This presentation is heavily based on the book Text Mining with R by Julia Silge and David Robinson. You can check it online [here](https://www.tidytextmining.com/) for free.
+Firstly, I would like to make clear that this presentation is heavily based on the book Text Mining with R by Julia Silge and David Robinson, all the examples were taken from that book. You can check it online [here](https://www.tidytextmining.com/) for free.
+
+1. Tidy data and Tidy Text data
+2. Text "Tokenisation"
+3. Data reading with readr
+4. Data manipulation with dplyr
+5. Joining data with dplyr
+6. Plotting with ggplot2
+7. Basic sentiment analysis
 
 # Tidy data
 
@@ -28,7 +36,7 @@ Using tidy data principles is a powerful way to make handling data easier and mo
 * Each observation is a row
 * Each type of observational unit is a table
 
-![](images/tidydata.png)
+![](img/tidydata.png)
 
 
 # Tidy text data
@@ -143,7 +151,7 @@ Emma seems to be the longest book with 160k words whilst Northanger Abbey is the
 Now that the data is in one-word-per-row format, we can manipulate it with tidy tools like `dplyr`. Often in text analysis, we will want to remove stop words; stop words are words that are not useful for an analysis, typically extremely common words such as “the”, “of”, “to”, and so forth in English. We can remove stop words (kept in the tidytext dataset `stop_words`) with an `anti_join()`.
 
 The anti-join functions is an implementation of a filtering join, which drops all observations in `x` that have a match in `y`.
-![](images/join-anti.png)
+![](img/join-anti.png)
 
 ```{r jane austen filtering stop-words}
 jane_tidy_words <- jane_tidy %>% 
@@ -249,7 +257,7 @@ jane_tidy_words %>%
 In the previous section, we explored what we mean by the tidy text format and showed how this format can be used to approach questions about word frequency. This allowed us to analyze which words are used most frequently in documents and to compare documents, but now let’s investigate a different topic. Let’s address the topic of opinion mining or sentiment analysis. When human readers approach a text, we use our understanding of the emotional intent of words to infer whether a section of text is positive or negative, or perhaps characterized by some other more nuanced emotion like surprise or disgust.
 We can use the tools of text mining to approach the emotional content of text programmatically, as shown in the following flowchart.
 
-![](images/sentiment_analysis.png)
+![](img/sentiment_analysis.png)
 One way to analyze the sentiment of a text is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words. This isn’t the only way to approach sentiment analysis, but it is an often-used approach, and an approach that naturally takes advantage of the tidy tool ecosystem.
 
 ## Lexicons
@@ -342,12 +350,12 @@ jane_tidy_words %>%
 
 It looks like the results are not very different from the previous analysis.
 
+# And what's next?
 
-# TF-IDF 
-Term Frequency - Inverse Document Frequency
+There are still many other techniques we could use to apply text mining analysis, such as:
 
-Using TF-IDF it's possible to mensurate what words are more common in a chapter and less common in others chapters, for instance.
-
-
-## The bind-tf-idf function
-
+* TF-IDF - Term Frequency Inverse Term Frequency
+* N-grams 
+* Casting data from and to tidy text formats
+* Topic Modelling - LDA
+* Advanced topics like NLP - Google NLP & Amazon Comprehend
