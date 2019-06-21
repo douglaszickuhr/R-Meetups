@@ -5,4 +5,4 @@ I'll post here some code from R Meetups
 
 [Linear Regression - 23/10/2018](20181023/20181023-linear-regression.Rmd)
 
-[Text Mining with R - 23/04/2019](20190423/"text mining.Rmd")
+[Text Mining with R - 23/04/2019](20190423/text%20mining.Rmd)
